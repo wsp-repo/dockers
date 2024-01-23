@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  php74_fpm_example:
+    container_name: 'php74_fpm_example'
+    build:
+      context: '/DATA/dockers/php7.4-fpm'
+    volumes:
+      - './configs/cron/:/opt/cron/conf/'
+      - './configs/ssmtp/:/opt/ssmtp/conf/'
+      - './configs/php/:/opt/php/conf/'
+      - '/www/example/www/:/www/example/www/'
+      - '/var/log/ssmtp/:/var/log/ssmtp/'
+      - '/var/log/cron/:/var/log/cron/'
+      - '/var/log/php/:/var/log/php/'
+    ports:
+      # поменять порт для хоста
+      - '127.0.0.1:9000:9000'
+    extra_hosts:
+      - 'mysql:192.168.0.1'
+    restart: 'always'
