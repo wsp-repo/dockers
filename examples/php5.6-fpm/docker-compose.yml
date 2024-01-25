@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   php56_fpm_example:
-    container_name: 'php74_fpm_example'
+    container_name: 'php56_fpm_example'
     build:
-      context: '../../php7.4-fpm'
+      context: '../../php5.6-fpm'
     volumes:
       - './configs/php/:/opt/php/conf/'
       - './configs/cron/:/opt/cron/conf/'
@@ -15,10 +15,10 @@ services:
       - './sources/log/php/:/var/log/php/'
     ports:
       # поменять порт для хоста
-      - '127.0.0.1:9074:9000'
+      - '127.0.0.1:9056:9000'
     extra_hosts:
       - 'mysql:192.168.0.1'
     restart: 'always'
 networks:
   default:
-    name: php74_fpm_example
+    name: php56_fpm_example

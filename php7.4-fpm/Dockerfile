@@ -21,19 +21,19 @@ RUN echo 'Europe/Moscow' > /etc/timezone && \
 # подготовка SSMTP
 RUN mkdir -p /opt/ssmtp/conf && \
     cp -r -n /etc/ssmtp/* /opt/ssmtp/conf/ && \
-    rm -f -r -d /etc/ssmtp && ln -s /opt/ssmtp/conf /etc/ssmtp
+    rm -f -r -d /etc/ssmtp && ln -sf /opt/ssmtp/conf /etc/ssmtp
 RUN mkdir -p /opt/ssmtp/orig && cp -r -n /opt/ssmtp/conf/* /opt/ssmtp/orig/
-RUN mkdir -p /var/log/ssmtp
+RUN mkdir -p /var/log/ssmtp && chmod 0777 /var/log/ssmtp
 
 # подготовка PHP-FPM
 RUN mkdir -p /opt/php/conf/cli && \
     mv /etc/php/7.4/cli/php.ini /opt/php/conf/cli/ && \
-    ln -s /opt/php/conf/cli/php.ini /etc/php/7.4/cli/php.ini
+    ln -sf /opt/php/conf/cli/php.ini /etc/php/7.4/cli/php.ini
 RUN mkdir -p /opt/php/conf/fpm && \
     mv /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php-fpm.conf /etc/php/7.4/fpm/pool.d /opt/php/conf/fpm/ && \
-    ln -s /opt/php/conf/fpm/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf && \
-    ln -s /opt/php/conf/fpm/php.ini /etc/php/7.4/fpm/php.ini && \
-    ln -s /opt/php/conf/fpm/pool.d /etc/php/7.4/fpm/pool.d
+    ln -sf /opt/php/conf/fpm/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf && \
+    ln -sf /opt/php/conf/fpm/php.ini /etc/php/7.4/fpm/php.ini && \
+    ln -sf /opt/php/conf/fpm/pool.d /etc/php/7.4/fpm/pool.d
 # тут делаем некоторые перенастройки значений конфигов в более точные
 RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm/php.ini && \
     sed -i -e "s|;*allow_url_fopen\s*=.*|allow_url_fopen = Off|g" /opt/php/conf/fpm/php.ini && \
@@ -47,17 +47,17 @@ RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm
     sed -i -e "s|;*clear_env\s*=.*|clear_env = no|g" /opt/php/conf/fpm/pool.d/www.conf && \
     sed -i -e "s|;*catch_workers_output\s*=.*|catch_workers_output = yes|g" /opt/php/conf/fpm/pool.d/www.conf;
 RUN mkdir -p /opt/php/orig && cp -r -n /opt/php/conf/* /opt/php/orig/
-RUN ln -s /usr/sbin/php-fpm7.4 /usr/bin/php-fpm
-RUN mkdir -p /var/log/php
+RUN mkdir -p /var/log/php && chmod 0777 /var/log/php
+RUN ln -sf /usr/sbin/php-fpm7.4 /usr/bin/php-fpm
 
 # подготовка CRON
 COPY ./crontabs/cron /etc/cron.d/cron
 RUN mkdir -p /opt/cron/conf/crontabs && \
     rm -f -r -d /var/spool/cron/crontabs && \
-    ln -s /opt/cron/conf/crontabs /var/spool/cron/crontabs
+    ln -sf /opt/cron/conf/crontabs /var/spool/cron/crontabs
 RUN chmod 0644 /etc/cron.d/cron && crontab -u www-data /etc/cron.d/cron
 RUN mkdir -p /opt/cron/orig && cp -r -n /opt/cron/conf/* /opt/cron/orig/
-RUN mkdir -p /var/log/cron
+RUN mkdir -p /var/log/cron && chmod 0777 /var/log/cron
 
 # подготовка супервизора процессов
 COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
