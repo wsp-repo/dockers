@@ -1,21 +1,24 @@
 version: '3.8'
 
 services:
-  php82_fpm_example:
+  php56_fpm_example:
     container_name: 'php82_fpm_example'
     build:
-      context: '/DATA/dockers/php8.2-fpm'
+      context: '../../php8.2-fpm'
     volumes:
+      - './configs/php/:/opt/php/conf/'
       - './configs/cron/:/opt/cron/conf/'
       - './configs/ssmtp/:/opt/ssmtp/conf/'
-      - './configs/php/:/opt/php/conf/'
-      - '/www/example/www/:/www/example/www/'
-      - '/var/log/ssmtp/:/var/log/ssmtp/'
-      - '/var/log/cron/:/var/log/cron/'
-      - '/var/log/php/:/var/log/php/'
+      - './sources/htdocs/:/www/htdocs/'
+      - './sources/log/ssmtp/:/var/log/ssmtp/'
+      - './sources/log/cron/:/var/log/cron/'
+      - './sources/log/php/:/var/log/php/'
     ports:
       # поменять порт для хоста
-      - '127.0.0.1:9000:9000'
+      - '127.0.0.1:9082:9000'
     extra_hosts:
       - 'mysql:192.168.0.1'
     restart: 'always'
+networks:
+  default:
+    name: php82_fpm_example

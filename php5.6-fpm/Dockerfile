@@ -1,11 +1,16 @@
 FROM debian:bookworm-slim
 
 RUN apt update && apt install -y \
-    lsb-release ca-certificates curl ssmtp cron supervisor mc \
-    php8.2-fpm php8.2-curl php8.2-gd php8.2-http php8.2-imagick \
-    php8.2-imap php8.2-intl php8.2-mailparse php8.2-mbstring php8.2-mcrypt \
-    php8.2-memcache php8.2-memcached php8.2-mysql php8.2-pgsql php8.2-raphf \
-    php8.2-redis php8.2-uuid php8.2-xml php8.2-xmlrpc php8.2-xsl php8.2-zip
+    lsb-release ca-certificates curl ssmtp cron supervisor mc
+
+RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+
+RUN apt update && apt install -y \
+    php5.6-fpm php5.6-curl php5.6-gd php5.6-http php5.6-imagick \
+    php5.6-imap php5.6-intl php5.6-mailparse php5.6-mbstring php5.6-mcrypt \
+    php5.6-memcache php5.6-memcached php5.6-mysql php5.6-pgsql php5.6-raphf \
+    php5.6-redis php5.6-xml php5.6-xmlrpc php5.6-xsl php5.6-zip
 
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -22,13 +27,13 @@ RUN mkdir -p /var/log/ssmtp && chmod 0777 /var/log/ssmtp
 
 # подготовка PHP-FPM
 RUN mkdir -p /opt/php/conf/cli && \
-    mv /etc/php/8.2/cli/php.ini /opt/php/conf/cli/ && \
-    ln -sf /opt/php/conf/cli/php.ini /etc/php/8.2/cli/php.ini
+    mv /etc/php/5.6/cli/php.ini /opt/php/conf/cli/ && \
+    ln -sf /opt/php/conf/cli/php.ini /etc/php/5.6/cli/php.ini
 RUN mkdir -p /opt/php/conf/fpm && \
-    mv /etc/php/8.2/fpm/php.ini /etc/php/8.2/fpm/php-fpm.conf /etc/php/8.2/fpm/pool.d /opt/php/conf/fpm/ && \
-    ln -sf /opt/php/conf/fpm/php-fpm.conf /etc/php/8.2/fpm/php-fpm.conf && \
-    ln -sf /opt/php/conf/fpm/php.ini /etc/php/8.2/fpm/php.ini && \
-    ln -sf /opt/php/conf/fpm/pool.d /etc/php/8.2/fpm/pool.d
+    mv /etc/php/5.6/fpm/php.ini /etc/php/5.6/fpm/php-fpm.conf /etc/php/5.6/fpm/pool.d /opt/php/conf/fpm/ && \
+    ln -sf /opt/php/conf/fpm/php-fpm.conf /etc/php/5.6/fpm/php-fpm.conf && \
+    ln -sf /opt/php/conf/fpm/php.ini /etc/php/5.6/fpm/php.ini && \
+    ln -sf /opt/php/conf/fpm/pool.d /etc/php/5.6/fpm/pool.d
 # тут делаем некоторые перенастройки значений конфигов в более точные
 RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm/php.ini && \
     sed -i -e "s|;*allow_url_fopen\s*=.*|allow_url_fopen = Off|g" /opt/php/conf/fpm/php.ini && \
@@ -43,7 +48,7 @@ RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm
     sed -i -e "s|;*catch_workers_output\s*=.*|catch_workers_output = yes|g" /opt/php/conf/fpm/pool.d/www.conf;
 RUN mkdir -p /opt/php/orig && cp -r -n /opt/php/conf/* /opt/php/orig/
 RUN mkdir -p /var/log/php && chmod 0777 /var/log/php
-RUN ln -sf /usr/sbin/php-fpm8.2 /usr/bin/php-fpm
+RUN ln -sf /usr/sbin/php-fpm5.6 /usr/bin/php-fpm
 
 # подготовка CRON
 COPY ./crontabs/cron /etc/cron.d/cron
