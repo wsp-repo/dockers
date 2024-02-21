@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  yandex_disk_example:
+    container_name: 'yandex_disk_example'
+    build:
+      context: '../../yandex-disk'
+    volumes:
+      # предварительно нужно создать файлы конфига с помощью
+      # команды "yandex-disk setup" и скопировать их из директории
+      # ~/.config/yandex-disk в директорию волюма ./config
+      - './config/:/root/.config/yandex-disk/'
+      - './sources/:/root/Yandex.Disk/'
+    restart: 'no'
+networks:
+  default:
+    name: yandex_disk_example
+    external: true
