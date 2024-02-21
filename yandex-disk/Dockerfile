@@ -8,7 +8,7 @@ RUN echo "deb http://repo.yandex.ru/yandex-disk/deb/ stable main" | tee -a /etc/
     wget http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG -O- | apt-key add - && \
     apt update && apt install -y yandex-disk
 
-# RUN apt clean && rm -rf /var/lib/apt/lists/*
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 # подготовка системы в целом
 RUN echo 'Europe/Moscow' > /etc/timezone && \
