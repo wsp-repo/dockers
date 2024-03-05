@@ -7,7 +7,7 @@ RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.or
 RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
 RUN apt update && apt install -y \
-    php5.6-fpm php5.6-curl php5.6-gd php5.6-http php5.6-imagick \
+    php5.6-fpm php5.6-curl php5.6-gd php5.6-imagick \
     php5.6-imap php5.6-intl php5.6-mailparse php5.6-mbstring php5.6-mcrypt \
     php5.6-memcache php5.6-memcached php5.6-mysql php5.6-pgsql php5.6-raphf \
     php5.6-redis php5.6-xml php5.6-xmlrpc php5.6-xsl php5.6-zip
