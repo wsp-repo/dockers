@@ -2,7 +2,7 @@ FROM debian:bookworm-slim
 
 RUN apt update && apt install -y \
     lsb-release ca-certificates curl ssmtp cron supervisor mc \
-    php8.2-fpm php8.2-curl php8.2-gd php8.2-http php8.2-imagick \
+    php8.2-fpm php8.2-curl php8.2-gd php8.2-imagick \
     php8.2-imap php8.2-intl php8.2-mailparse php8.2-mbstring php8.2-mcrypt \
     php8.2-memcache php8.2-memcached php8.2-mysql php8.2-pgsql php8.2-raphf \
     php8.2-redis php8.2-uuid php8.2-xml php8.2-xmlrpc php8.2-xsl php8.2-zip
