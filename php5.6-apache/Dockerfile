@@ -4,8 +4,8 @@ RUN apt update && apt install -y \
     lsb-release ca-certificates curl \
     ssmtp cron supervisor mc
 
-RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+RUN curl -sSLo /usr/share/keyrings/deb.sury.su-php.gpg https://packages.sury.su/php/apt.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.su-php.gpg] https://packages.sury.su/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php-sury.list
 
 RUN apt update && apt install -y \
     libapache2-mod-php5.6 php5.6 php5.6-curl php5.6-gd php5.6-gmp php5.6-imagick \

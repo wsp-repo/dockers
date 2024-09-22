@@ -3,8 +3,8 @@ FROM debian:bookworm-slim
 RUN apt update && apt install -y \
     lsb-release ca-certificates curl ssmtp cron supervisor mc
 
-RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+RUN curl -sSLo /usr/share/keyrings/deb.sury.su-php.gpg https://packages.sury.su/php/apt.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.su-php.gpg] https://packages.sury.su/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php-sury.list
 
 RUN apt update && apt install -y \
     php7.4-fpm php7.4-curl php7.4-gd php7.4-imagick \
