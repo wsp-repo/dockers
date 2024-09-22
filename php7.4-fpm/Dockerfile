@@ -67,7 +67,7 @@ COPY ./entrypoint/entrypoint.sh /opt/
 RUN chmod +x /opt/entrypoint.sh
 
 # запуск супервизора в entrypoint.sh
-# ENTRYPOINT ["/opt/entrypoint.sh"]
+ENTRYPOINT ["/opt/entrypoint.sh"]
 
 # CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
-CMD ["sleep", "10000000"]
+# CMD ["sleep", "10000000"]
