@@ -2,11 +2,10 @@ FROM debian:bookworm-slim
 
 RUN apt update && apt install -y \
     lsb-release ca-certificates curl ssmtp cron supervisor mc \
-    php8.4-fpm php8.4-curl php8.4-gd \
-    php8.4-intl php8.4-mailparse php8.4-mbstring php8.4-mcrypt \
-    php8.4-memcache php8.4-memcached php8.4-mysql php8.4-pgsql php8.4-raphf \
-    php8.4-redis php8.4-uuid php8.4-xml php8.4-xmlrpc php8.4-xsl php8.4-zip
-    # php8.4-imagick php8.4-imap 
+    php8.3-fpm php8.3-curl php8.3-gd php8.3-imagick \
+    php8.3-imap php8.3-intl php8.3-mailparse php8.3-mbstring php8.3-mcrypt \
+    php8.3-memcache php8.3-memcached php8.3-mysql php8.3-pgsql php8.3-raphf \
+    php8.3-redis php8.3-uuid php8.3-xml php8.3-xmlrpc php8.3-xsl php8.3-zip
 
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -23,13 +22,13 @@ RUN mkdir -p /var/log/ssmtp && chmod 0777 /var/log/ssmtp
 
 # подготовка PHP-FPM
 RUN mkdir -p /opt/php/conf/cli && \
-    mv /etc/php/8.4/cli/php.ini /opt/php/conf/cli/ && \
-    ln -sf /opt/php/conf/cli/php.ini /etc/php/8.4/cli/php.ini
+    mv /etc/php/8.3/cli/php.ini /opt/php/conf/cli/ && \
+    ln -sf /opt/php/conf/cli/php.ini /etc/php/8.3/cli/php.ini
 RUN mkdir -p /opt/php/conf/fpm && \
-    mv /etc/php/8.4/fpm/php.ini /etc/php/8.4/fpm/php-fpm.conf /etc/php/8.4/fpm/pool.d /opt/php/conf/fpm/ && \
-    ln -sf /opt/php/conf/fpm/php-fpm.conf /etc/php/8.4/fpm/php-fpm.conf && \
-    ln -sf /opt/php/conf/fpm/php.ini /etc/php/8.4/fpm/php.ini && \
-    ln -sf /opt/php/conf/fpm/pool.d /etc/php/8.4/fpm/pool.d
+    mv /etc/php/8.3/fpm/php.ini /etc/php/8.3/fpm/php-fpm.conf /etc/php/8.3/fpm/pool.d /opt/php/conf/fpm/ && \
+    ln -sf /opt/php/conf/fpm/php-fpm.conf /etc/php/8.3/fpm/php-fpm.conf && \
+    ln -sf /opt/php/conf/fpm/php.ini /etc/php/8.3/fpm/php.ini && \
+    ln -sf /opt/php/conf/fpm/pool.d /etc/php/8.3/fpm/pool.d
 # тут делаем некоторые перенастройки значений конфигов в более точные
 RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm/php.ini && \
     sed -i -e "s|;*allow_url_fopen\s*=.*|allow_url_fopen = Off|g" /opt/php/conf/fpm/php.ini && \
@@ -44,7 +43,7 @@ RUN sed -i -e "s|;*short_open_tag\s*=.*|short_open_tag = On|g" /opt/php/conf/fpm
     sed -i -e "s|;*catch_workers_output\s*=.*|catch_workers_output = yes|g" /opt/php/conf/fpm/pool.d/www.conf;
 RUN mkdir -p /opt/php/orig && cp -r -n /opt/php/conf/* /opt/php/orig/
 RUN mkdir -p /var/log/php && chmod 0777 /var/log/php
-RUN ln -sf /usr/sbin/php-fpm8.4 /usr/bin/php-fpm
+RUN ln -sf /usr/sbin/php-fpm8.3 /usr/bin/php-fpm
 
 # подготовка CRON
 COPY ./crontabs/cron /etc/cron.d/cron

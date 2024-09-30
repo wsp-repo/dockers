@@ -1,9 +1,9 @@
 services:
-  php84_fpm_example:
-    container_name: 'php84_fpm_example'
+  php83_fpm_example:
+    container_name: 'php83_fpm_example'
     build:
-      context: '../../php8.4-fpm'
-      # context: 'https://github.com/wsp-repo/dockers.git#:php8.4-fpm'
+      context: '../../php8.3-fpm'
+      # context: 'https://github.com/wsp-repo/dockers.git#:php8.3-fpm'
     volumes:
       - './configs/php/:/opt/php/conf/'
       - './configs/cron/:/opt/cron/conf/'
@@ -20,4 +20,4 @@ services:
     restart: 'always'
 networks:
   default:
-    name: php84_fpm_example
+    name: php83_fpm_example
